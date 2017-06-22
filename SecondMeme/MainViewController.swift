@@ -105,27 +105,36 @@ class MainViewController: UIViewController{
     
     // MARK: Topbar - Share
     @IBAction func share(_ sender: Any) {
-        let image = generateMemedImage()
-        let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        self.present(controller, animated: true, completion: nil)
-        controller.completionWithItemsHandler = completionHandler
+        
+        let memedimage = generateMemedImage()
+        
+        let activityView = UIActivityViewController(activityItems: [memedimage], applicationActivities: nil)
+        
+        self.present(activityView, animated: true, completion: nil)
+        
+        activityView.completionWithItemsHandler = completionHandler
+        
     }
     
     func completionHandler(activityType: UIActivityType?, shared: Bool, items: [Any]?, error: Error?) {
         if (shared) {
-            save()
-        }
-        else {
-            print("User canceled sharing")
+            self.save()
+            self.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "TabSegue", sender: nil)
         }
     }
     
     // MARK: Creating MEME Object
     func save() {
         // Create the meme
-        let memedImage = generateMemedImage()
-        let meme = MemeStruct(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+        
+        // Add it to the memes array in the Applicaton Delegate
+        let object  = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
     }
+
     
     func generateMemedImage() -> UIImage {
         
@@ -151,7 +160,8 @@ class MainViewController: UIViewController{
         imagePickerView.image = nil
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "TabSegue", sender: nil)
     }
     
 }
