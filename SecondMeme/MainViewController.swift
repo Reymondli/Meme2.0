@@ -26,7 +26,7 @@ class MainViewController: UIViewController{
         NSStrokeColorAttributeName: UIColor.black,
         NSForegroundColorAttributeName: UIColor.white,
         NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName: -1.0]
+        NSStrokeWidthAttributeName: -3.0]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,7 +120,6 @@ class MainViewController: UIViewController{
         if (shared) {
             self.save()
             self.dismiss(animated: true, completion: nil)
-            self.performSegue(withIdentifier: "TabSegue", sender: nil)
         }
     }
     
@@ -139,8 +138,7 @@ class MainViewController: UIViewController{
     func generateMemedImage() -> UIImage {
         
         // TODO: Hide toolbar and navbar
-        toolBar.isHidden = true
-        topBar.isHidden = true
+        configHiddenBars(hidden: true)
         
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -149,10 +147,14 @@ class MainViewController: UIViewController{
         UIGraphicsEndImageContext()
         
         // TODO: Show toolbar and navbar
-        toolBar.isHidden = false
-        topBar.isHidden = false
+        configHiddenBars(hidden: false)
         
         return memedImage
+    }
+    
+    func configHiddenBars(hidden: Bool) {
+        toolBar.isHidden = hidden
+        topBar.isHidden = hidden
     }
     
     // MARK: Topbar - Cancel
@@ -160,8 +162,7 @@ class MainViewController: UIViewController{
         imagePickerView.image = nil
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
-        //dismiss(animated: true, completion: nil)
-        performSegue(withIdentifier: "TabSegue", sender: nil)
+        dismiss(animated: true, completion: nil)
     }
     
 }
