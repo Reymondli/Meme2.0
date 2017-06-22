@@ -43,6 +43,7 @@ class MainViewController: UIViewController{
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         shareButton.isEnabled = !(self.imagePickerView.image == nil)
     }
     
@@ -81,14 +82,16 @@ class MainViewController: UIViewController{
     
     func keyboardWillShow(_ notification:Notification) {
         if bottomTextField.isFirstResponder{
-            view.frame.origin.y -= getKeyboardHeight(notification)
+            // old: view.frame.origin.y -= getKeyboardHeight(notification)
+            // Better slide up view
+            view.frame.origin.y = getKeyboardHeight(notification) * (-1)
         }
     }
     
     // MARK: Keyboard Adjustments - Hide
     func keyboardWillHide(_ notification:Notification) {
         if bottomTextField.isFirstResponder{
-            //view.frame.origin.y += getKeyboardHeight(notification)
+            // old: view.frame.origin.y += getKeyboardHeight(notification)
             view.frame.origin.y = 0
         }
     }
@@ -159,9 +162,11 @@ class MainViewController: UIViewController{
     
     // MARK: Topbar - Cancel
     @IBAction func cancel(_ sender: Any) {
+        /*
         imagePickerView.image = nil
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
+        */
         dismiss(animated: true, completion: nil)
     }
     

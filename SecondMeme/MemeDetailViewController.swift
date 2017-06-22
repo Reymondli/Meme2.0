@@ -19,11 +19,16 @@ class MemeDetailViewController: UIViewController {
     
     // MARK: Life Cycle
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // We only to setup the content mode of imageDetailView once and not every time this view appears.
+        imageDetailView.contentMode = .scaleAspectFit
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Load Memed Image
         self.imageDetailView!.image = memeSelected.memedImage
-        imageDetailView.contentMode = .scaleAspectFit
         
         // For collection view
         self.tabBarController?.tabBar.isHidden = true
